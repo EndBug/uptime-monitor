@@ -1,3 +1,7 @@
+/**
+ * @author Federico Grandi <fgrandi30@gmail.com>
+ */
+
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const token = process.env.UPTIME_TOKEN;
@@ -25,6 +29,11 @@ function loop() {
   setTimeout(loop, config.loop);
 }
 
+/**
+ * check - check if the users in the list are online, if they're not, focus them
+ *
+ * @return {undefined}
+ */
 function check() {
   for (let target of list.array) {
     if (!target.focused && !target.reported) {
@@ -34,6 +43,11 @@ function check() {
   }
 }
 
+/**
+ * second - check if the focused users are now online, if they're not, report them to the owner
+ *
+ * @return {undefined}
+ */
 function second() {
   for (let target of list.array) {
     if (target.torecheck) {
@@ -50,6 +64,11 @@ function second() {
   }
 }
 
+/**
+ * third - check if the reported users are now back online, if so, restart checking for them in check()
+ *
+ * @return {undefined}
+ */
 function third() {
   for (let target of list.array) {
     if (target.reported) {

@@ -1,4 +1,16 @@
+/**
+ * @author Federico Grandi <fgrandi30@gmail.com>
+ */
+
 class Target {
+  /**
+   * constructor - create a target
+   *
+   * @param  {string}     name     The name of the target, only for debug purposes
+   * @param  {string}     id       The id of the target
+   * @param  {number}     minutes  The minutes that the bot should wait to recheck
+   * @return {undefined}
+   */
   constructor(name = "", id = "", minutes) {
     this.err = null;
 
@@ -19,6 +31,12 @@ class Target {
     }
   }
 
+  /**
+   * focus - change this.focused and start second check timer
+   *
+   * @param  {boolean} value
+   * @return {undefined}
+   */
   focus(value = true) {
     this.focused = value;
     setTimeout(() => {
@@ -26,10 +44,22 @@ class Target {
     }, this.timeout);
   }
 
+  /**
+   * recheck - change this.torecheck
+   *
+   * @param  {boolean} value
+   * @return {undefined}
+   */
   recheck(value = true) {
     this.torecheck = value;
   }
 
+  /**
+   * report - change this.reported and set this.focused to false
+   *
+   * @param  {boolean} value
+   * @return {undefined}
+   */
   report(value = true) {
     this.reported = value;
     this.focused = false;
@@ -37,6 +67,12 @@ class Target {
 }
 
 class TargetList {
+  /**
+   * constructor - create a new list
+   *
+   * @param  {Target | Array[Target]} ts Target or array of Targets that the list should include
+   * @return {undefined}
+   */
   constructor(ts = []) {
     if (ts instanceof Target) ts = [ts];
     if (!(ts instanceof Array)) throw new Error(`Cannot build target list without a valid argument:\n${ts}`);
@@ -44,6 +80,13 @@ class TargetList {
     this.array = ts;
   }
 
+  /**
+   * add - add a Target to the list
+   *
+   * @param  {string} id      The id of the target
+   * @param  {number} minutes The minutes that the bot should wait to recheck
+   * @return {undefined}
+   */
   add(id = "", minutes) {
     let curr = new Target(`Manual (${new Date()})`, id, minutes);
     if (curr.err == null) {
