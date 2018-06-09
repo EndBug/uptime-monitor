@@ -21,6 +21,8 @@ To modify the settings, go in settings.json, you'll find these options:
 
 In `list` every element has to follow this format: `["name", "id", minutes]`, with `minutes` as a number.
 
+You can find a template in settings.json (keep in mind that it won't work for your bot)
+
 ## Improvements
 If you want to change something in the behavior, you can look at the JSDocs in the docs. If you find a bug feel free to open an issue on [GitHub](https://github.com/EndBug/uptime-monitor) or submit a PR.
 
