@@ -1,0 +1,12 @@
+{
+  "owner": "218308478580555777",
+  "guild": "266553379201875968",
+  "token": {
+    "str": "process.env.UPTIME_TOKEN",
+    "toeval": true
+  },
+  "min": 1,
+  "list": [
+    ["TRT Bot", "330773448324415489", 10]
+  ]
+}

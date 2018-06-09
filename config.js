@@ -2,14 +2,16 @@
  * @author Federico Grandi <fgrandi30@gmail.com>
  */
 
+var settings = require("./settings.json");
+
 class Target {
   /**
    * constructor - create a target
    *
-   * @param  {string}     name     The name of the target, only for debug purposes
-   * @param  {string}     id       The id of the target
-   * @param  {number}     minutes  The minutes that the bot should wait to recheck
-   * @return {undefined}
+   * @param  {String}     name     The name of the target, only for debug purposes
+   * @param  {String}     id       The id of the target
+   * @param  {Number}     minutes  The minutes that the bot should wait to recheck
+   * @return {Undefined}
    */
   constructor(name = "", id = "", minutes) {
     this.err = null;
@@ -34,8 +36,8 @@ class Target {
   /**
    * focus - change this.focused and start second check timer
    *
-   * @param  {boolean} value
-   * @return {undefined}
+   * @param  {Boolean} value
+   * @return {Undefined}
    */
   focus(value = true) {
     this.focused = value;
@@ -47,8 +49,8 @@ class Target {
   /**
    * recheck - change this.torecheck
    *
-   * @param  {boolean} value
-   * @return {undefined}
+   * @param  {Boolean} value
+   * @return {Undefined}
    */
   recheck(value = true) {
     this.torecheck = value;
@@ -57,8 +59,8 @@ class Target {
   /**
    * report - change this.reported and set this.focused to false
    *
-   * @param  {boolean} value
-   * @return {undefined}
+   * @param  {Boolean} value
+   * @return {Undefined}
    */
   report(value = true) {
     this.reported = value;
@@ -71,7 +73,7 @@ class TargetList {
    * constructor - create a new list
    *
    * @param  {Target | Array[Target]} ts Target or array of Targets that the list should include
-   * @return {undefined}
+   * @return {Undefined}
    */
   constructor(ts = []) {
     if (ts instanceof Target) ts = [ts];
@@ -83,12 +85,14 @@ class TargetList {
   /**
    * add - add a Target to the list
    *
-   * @param  {string} id      The id of the target
-   * @param  {number} minutes The minutes that the bot should wait to recheck
-   * @return {undefined}
+   * @param  {String} name    The name of the target, only for debug purposes
+   * @param  {String} id      The id of the target
+   * @param  {Number} minutes The minutes that the bot should wait to recheck
+   * @return {Undefined}
    */
-  add(id = "", minutes) {
-    let curr = new Target(`Manual (${new Date()})`, id, minutes);
+  add(name = "", id = "", minutes) {
+    if (name == "") name = `Manual (${new Date()})`;
+    let curr = new Target(name, id, minutes);
     if (curr.err == null) {
       this.array.push(curr);
       return curr;
@@ -96,11 +100,25 @@ class TargetList {
   }
 }
 
+/**
+ * listFromSettings - create a TargetList from the settings.json file
+ *
+ * @param  {Array[Array]} arr The target form
+ * @return {TargetList}       The resulting list
+ */
+function listFromSettings(arr = []) {
+  let list = new TargetList();
+  if (!(arr instanceof Array)) throw new Error(`Cannot build TargetList without valid array:\n${arr}`);
+  for (let curr of arr) {
+    if (!(curr instanceof Array)) throw new Error(`Invalid target format in settings.json:\n${curr}`);
+    list.add(curr[0], curr[1], curr[2]);
+  }
+  return list;
+}
+
 module.exports = {
-  "owner": "218308478580555777",
-  "guild": "266553379201875968",
-  "loop": 1 * 60 * 1000, //ms
-  "watched": new TargetList([
-    new Target("TRT Bot", "330773448324415489", 10),
-  ])
+  owner: settings.owner,
+  guild: settings.guild,
+  loop: settings.min * 60 * 1000, //ms
+  watched: listFromSettings(settings.list)
 };
