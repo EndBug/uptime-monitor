@@ -1,4 +1,4 @@
-# uptime-monitor [![NPM version](https://badge.fury.io/js/uptime-monitor.svg)](https://npmjs.org/package/uptime-monitor)
+# uptime-monitor [![NPM version](https://badge.fury.io/js/uptime-monitor.svg)](https://npmjs.org/package/uptime-monitor) ![David](https://david-dm.org/EndBug/uptime-monitor.svg) [![npm](https://img.shields.io/npm/dt/uptime-monitor.svg)](https://npmjs.org/package/uptime-monitor)
 
 > A Discord bot that notifies you when one of the watched bots/users goes offline for a continued period of time (meant for bots, not so useful with users)
 
@@ -12,12 +12,14 @@ $ npm install --save uptime-monitor
 
 To modify the settings, go in settings.json, you'll find these options:
 
- - `owner`: your ID
+ - `commands.on` & `commands.off`: arrays of command names to use
  - `guild`: your guild's ID
+ - `list`: an array of arrays
+ - `min`: minutes between checks
+ - `owner`: your ID
+ - `status.on` & `status.off`: two objects with a `text` and a `type` that will be used for the bot presence
  - `token.str`: your token OR a valid variable that can be evaled
  - `token.toeval`: whether or not `token.str` should be evaled
- - `min`: minutes between checks
- - `list`: an array of arrays
 
 In `list` every element has to follow this format: `["name", "id", minutes]`, with `minutes` as a number.
 
