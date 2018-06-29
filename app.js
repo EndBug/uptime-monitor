@@ -26,9 +26,9 @@ client.on("ready", () => {
 });
 
 function loop() {
-  check();
   second();
   third();
+  check();
   setTimeout(loop, config.loop);
 }
 
