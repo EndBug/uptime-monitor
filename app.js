@@ -7,8 +7,7 @@ const client = new Discord.Client();
 const config = require("./config.js");
 
 var token = require("./settings.json").token;
-if (token.toeval) token = eval(token.str);
-else token = token.str;
+token = token.toeval ? eval(token.str) : token.str;
 
 client.login(token);
 
@@ -23,6 +22,7 @@ client.on("ready", () => {
   owner = guild.members.get(config.owner).user;
   list = config.watched;
 
+  // sets the presence of the bot
   client.user.setActivity(config.status.text, {
     type: config.status.type
   });
@@ -30,6 +30,8 @@ client.on("ready", () => {
   loop();
 });
 
+
+// executes all the checks
 function loop() {
   second();
   third();
@@ -37,11 +39,7 @@ function loop() {
   setTimeout(loop, config.loop);
 }
 
-/**
- * check - check if the users in the list are online, if they're not, focus them
- *
- * @return {Undefined}
- */
+// checks if the users in the list are online, if they're not, focus them
 function check() {
   for (let target of list.array) {
     if (!target.focused && !target.reported) {
@@ -51,11 +49,7 @@ function check() {
   }
 }
 
-/**
- * second - check if the focused users are now online, if they're not, report them to the owner
- *
- * @return {Undefined}
- */
+// checks if the focused users are now online, if they're not, report them to the owner
 function second() {
   for (let target of list.array) {
     if (target.torecheck) {
@@ -72,11 +66,7 @@ function second() {
   }
 }
 
-/**
- * third - check if the reported users are now back online, if so, restart checking for them in check()
- *
- * @return {Undefined}
- */
+// checks if the reported users are now back online, if so, restart checking for them in check()
 function third() {
   for (let target of list.array) {
     if (target.reported) {
