@@ -117,6 +117,7 @@ function listFromSettings(arr = []) {
 }
 
 module.exports = {
+  commands: settings.commands,
   guild: settings.guild,
   loop: settings.min * 60 * 1000, //ms
   owner: settings.owner,

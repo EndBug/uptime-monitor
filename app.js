@@ -15,7 +15,7 @@ client.on("error", (e) => console.error(e));
 client.on("warn", (w) => console.warn(w));
 client.on("debug", (d) => console.info(d));
 
-var guild, owner, list;
+var guild, list, owner, paused = false;
 
 client.on("ready", () => {
   guild = client.guilds.get(config.guild);
@@ -23,16 +23,66 @@ client.on("ready", () => {
   list = config.watched;
 
   // sets the presence of the bot
-  client.user.setActivity(config.status.text, {
-    type: config.status.type
-  });
-
+  setOnline();
   loop();
 });
 
+/**
+ * setOnline - sets the status of the bot according to the given value
+ *
+ * @param  {Boolean} value The value to set (true == online, false == dnd)
+ * @returns {Undefined}
+ */
+function setOnline(value = true) {
+  let s = value ? "on" : "off";
+  client.user.setActivity(config.status[s].text, {
+    type: config.status[s].type
+  });
+  client.user.setStatus(value ? "online" : "dnd");
+}
+
+/**
+ * checkCommands - searches for a command in the args
+ *
+ * @param   {Array} arr The array to scan
+ * @returns {Boolean | Undefined}
+ */
+function checkCommands(arr = []) {
+  if (!(arr instanceof Array)) arr = [arr];
+  let on = false,
+    off = false;
+
+  //check for commands & aliases
+  for (let command of config.commands.on)
+    if (arr.includes(command)) on = true;
+  for (let command of config.commands.off)
+    if (arr.includes(command)) off = true;
+
+  if (!(on || off) || (on && off)) return undefined;
+  if (on) return true;
+  if (off) return false;
+}
+
+//checks for command messages
+client.on("message", (msg) => {
+  //allow only if the owner writes in DM or mentions the bot
+  if (msg.author == owner && (msg.channel instanceof Discord.DMChannel ||
+      (msg.channel instanceof Discord.TextChannel && msg.content.startsWith(`<@${client.user.id}>`)))) {
+    let arg = msg.content.toLowerCase().split(" "),
+      res = checkCommands(arg);
+    if (res == undefined) msg.reply(`Cannot understand ${msg.content}`);
+    else {
+      if (paused == res) msg.reply(`Setting the bot to: ${res ? "on" : "off"}`);
+      paused = !res;
+      if (!paused) loop();
+      setOnline(res);
+    }
+  }
+});
 
 // executes all the checks
 function loop() {
+  if (paused) return;
   second();
   third();
   check();
