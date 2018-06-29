@@ -22,6 +22,11 @@ client.on("ready", () => {
   guild = client.guilds.get(config.guild);
   owner = guild.members.get(config.owner).user;
   list = config.watched;
+
+  client.user.setActivity(config.status.text, {
+    type: config.status.type
+  });
+
   loop();
 });
 

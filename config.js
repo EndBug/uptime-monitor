@@ -117,8 +117,9 @@ function listFromSettings(arr = []) {
 }
 
 module.exports = {
-  owner: settings.owner,
   guild: settings.guild,
   loop: settings.min * 60 * 1000, //ms
+  owner: settings.owner,
+  status: settings.status,
   watched: listFromSettings(settings.list)
 };

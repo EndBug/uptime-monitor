@@ -1,12 +1,16 @@
 {
-  "owner": "218308478580555777",
   "guild": "266553379201875968",
+  "list": [
+    ["TRT Bot", "330773448324415489", 10]
+  ],
+  "min": 1,
+  "owner": "218308478580555777",
+  "status": {
+    "text": "your bots",
+    "type": "WATCHING"
+  },
   "token": {
     "str": "process.env.UPTIME_TOKEN",
     "toeval": true
-  },
-  "min": 1,
-  "list": [
-    ["TRT Bot", "330773448324415489", 10]
-  ]
+  }
 }
