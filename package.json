@@ -1,6 +1,6 @@
 {
   "name": "uptime-monitor",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A Discord bot that notifies you when one of the watched bots/users goes offline for a continued period of time (meant for bots, not so useful with users)",
   "main": "app.js",
   "scripts": {
