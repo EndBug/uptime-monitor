@@ -20,6 +20,13 @@
   "dependencies": {
     "discord.js": "^11.3.2"
   },
+  "keywords": [
+    "discord",
+    "bot",
+    "online",
+    "downtime",
+    "discordapp"
+  ],
   "devDependencies": {
     "nodemon": "^1.18.1"
   }
