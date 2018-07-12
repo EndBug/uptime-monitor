@@ -19,5 +19,8 @@
   "homepage": "https://github.com/EndBug/uptime-monitor#readme",
   "dependencies": {
     "discord.js": "^11.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.1"
   }
 }

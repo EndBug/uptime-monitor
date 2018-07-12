@@ -1,43 +1,58 @@
+/*global isID*/
 /**
  * @author Federico Grandi <fgrandi30@gmail.com>
  */
-
-var settings = require("./settings.json");
 
 class Target {
   /**
    * constructor - create a target
    *
-   * @param  {String}     name     The name of the target, only for debug purposes
-   * @param  {String}     id       The id of the target
-   * @param  {Number}     minutes  The minutes that the bot should wait to recheck
-   * @returns {Undefined}
+   * @param  {string}     name     The name of the target, only for debug purposes
+   * @param  {string}     id       The id of the target
+   * @param  {number}     minutes  The minutes that the bot should wait to recheck
    */
   constructor(name = "", id = "", minutes) {
     this.err = null;
 
     if (!name.startsWith("Manual")) {
-      if (id == "") throw new Error(`Cannot build a target without valid id:\nNAME: ${name}\nID: ${id}`);
+      if (!isID(id)) throw new Error(`Cannot build a target without valid id:\nNAME: ${name}\nID: ${id}`);
       if (isNaN(minutes)) throw new Error(`Cannot build a target without a valide timeout:\nNAME: ${name}\nTIMEOUT: ${minutes}`);
     } else {
-      if (id == "") this.err = `Cannot build a target without valid id:\nNAME: ${name}\nID: ${id}`;
+      if (!isID(id)) this.err = `Cannot build a target without valid id:\nNAME: ${name}\nID: ${id}`;
       else if (isNaN(minutes)) this.err = `Cannot build a target without a valide timeout:\nNAME: ${name}\nTIMEOUT: ${minutes}`;
     }
 
     if (this.err == null) {
-      this.id = id;
-      this.timeout = minutes * 60 * 1000; //ms
+      this.name = name;
+      this.downtime;
       this.focused = false;
-      this.torecheck = false;
+      this.id = id;
+      this.msg;
       this.reported = false;
+      this.timeout = minutes * 60 * 1000; //ms
+      this.torecheck = false;
     }
+  }
+
+  /**
+   * checkMessage - checks whether the saved message still exists
+   *
+   * @returns {Promise<?Discord.Message>}
+   */
+  checkMessage() {
+    console.log(this.msg.id);
+    return new Promise((resolve, reject) => {
+      if (!this.msg) resolve(undefined);
+      this.msg.channel.fetchMessage(this.msg.id).then(m => {
+        resolve(m ? this.msg : undefined);
+      }).catch(reject);
+    });
   }
 
   /**
    * focus - change this.focused and start second check timer
    *
-   * @param  {Boolean} value
-   * @returns {Undefined}
+   * @param {boolean} value The value to set this.focused to
    */
   focus(value = true) {
     this.focused = value;
@@ -47,24 +62,62 @@ class Target {
   }
 
   /**
+   * getDowntime - returns the downtime
+   *
+   * @returns {number} number of downtime minutes
+   */
+  getDowntime() {
+    let now = new Date();
+    return Math.round((now - this.downtime) / 60000); //in minutes
+  }
+
+  /**
+   * offline - updates the offline time
+   *
+   * @returns {Date} the resulting date
+   */
+  offline() {
+    this.downtime = new Date();
+    return this.downtime;
+  }
+
+  /**
+   * online - resets the offline time
+   *
+   * @returns {null}
+   */
+  online() {
+    this.downtime = null;
+    return null;
+  }
+
+  /**
    * recheck - change this.torecheck
    *
-   * @param  {Boolean} value
-   * @returns {Undefined}
+   * @param {boolean} value The value to set this.torecheck to
    */
   recheck(value = true) {
     this.torecheck = value;
   }
 
   /**
-   * report - change this.reported and set this.focused to false
+   * report - change this.reported, set this.focused to false and update offline time
    *
-   * @param  {Boolean} value
-   * @returns {Undefined}
+   * @param {boolean} value The value to set this.reported to
    */
   report(value = true) {
     this.reported = value;
     this.focused = false;
+  }
+
+  /**
+   * setMessage - stores the message
+   *
+   * @param {Discord.Message} msg The message to save
+   */
+  setMessage(msg) {
+    console.log(msg == undefined);
+    this.msg = msg;
   }
 }
 
@@ -72,8 +125,7 @@ class TargetList {
   /**
    * constructor - create a new list
    *
-   * @param  {Target | Array[Target]} ts Target or array of Targets that the list should include
-   * @returns {Undefined}
+   * @param  {Target | Array<Target>} ts Target or array of Targets that the list should include
    */
   constructor(ts = []) {
     if (ts instanceof Target) ts = [ts];
@@ -85,10 +137,10 @@ class TargetList {
   /**
    * add - add a Target to the list
    *
-   * @param  {String} name    The name of the target, only for debug purposes
-   * @param  {String} id      The id of the target
-   * @param  {Number} minutes The minutes that the bot should wait to recheck
-   * @returns {Undefined}
+   * @param  {string} name    The name of the target, only for debug purposes
+   * @param  {string} id      The id of the target
+   * @param  {number} minutes The minutes that the bot should wait to recheck
+   * @returns {Target | string}
    */
   add(name = "", id = "", minutes) {
     if (name == "") name = `Manual (${new Date()})`;
@@ -98,13 +150,41 @@ class TargetList {
       return curr;
     } else return curr.err;
   }
+
+  /**
+   * get - gets a Target by id
+   *
+   * @param  {string} id The target's id
+   * @returns {?Target} The resulting Target, if it found one
+   */
+  get(id = "") {
+    for (let t of this.array) {
+      if (t.id == id) return t;
+    }
+  }
+
+  /**
+   * remove - removes a target from the list
+   *
+   * @param  {Target | string} target Either the target to remove or its ID
+   */
+  remove(target) {
+    if (isID(target)) target = this.get(target);
+    if (!(target instanceof Target)) console.error("Cannot remove an invalid target.");
+    else
+      for (let t of this.array) {
+        if (t == target) {
+          this.array.splice(this.array.indexOf(target), 1);
+        }
+      }
+  }
 }
 
 /**
  * listFromSettings - create a TargetList from the settings.json file
  *
- * @param  {Array[Array]} arr The target form
- * @returns {TargetList}       The resulting list
+ * @param  {Array<Array>} arr The target form
+ * @returns {TargetList} The resulting list
  */
 function listFromSettings(arr = []) {
   let list = new TargetList();
@@ -116,11 +196,13 @@ function listFromSettings(arr = []) {
   return list;
 }
 
-module.exports = {
-  commands: settings.commands,
-  guild: settings.guild,
-  loop: settings.min * 60 * 1000, //ms
-  owner: settings.owner,
-  status: settings.status,
-  watched: listFromSettings(settings.list)
+module.exports = (settings) => {
+  return {
+    commands: settings.commands,
+    guild: settings.guild,
+    loop: settings.ms, //ms
+    owner: settings.owner,
+    status: settings.status,
+    watched: listFromSettings(settings.list)
+  };
 };
