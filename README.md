@@ -67,4 +67,5 @@ To see the version changelog, you can look [here](https://github.com/EndBug/upti
 ## License
 
 MIT © [Federico Grandi](https://github.com/EndBug)
+
 [View full license](https://github.com/EndBug/uptime-monitor/blob/master/LICENSE)
