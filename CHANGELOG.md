@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.1](https://www.npmjs.com/package/uptime-monitor/v/3.0.1)
+**Changed:**
+- Updated docs
+- Updated dependencies
+
+***
 ## [3.0.0](https://www.npmjs.com/package/uptime-monitor/v/3.0.0)
 **Added:**
 - Added settings check
