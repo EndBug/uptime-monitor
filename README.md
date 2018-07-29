@@ -34,29 +34,29 @@ If you want to change something in the behavior, you can look at the JSDocs in t
 ```js
 const bot = require('uptime-monitor');
 bot({
-  "commands": { //optional, if null no command will be loaded
-    "on": ["on", "up"], //optional, if empty no 'on' commands will be loaded, if not an Array default commands will be loaded
-    "off": ["off", "down"] //same thing as commands.on
+  "commands": { // optional, if null no command will be loaded
+    "on": ["on", "up"], // optional, if empty no 'on' commands will be loaded, if not an Array default commands will be loaded
+    "off": ["off", "down"] // same thing as commands.on
   },
-  "guild": "guild_id", //required
-  "list": [ //required, should have at least one element, formatted like this one
+  "guild": "guild_id", // required
+  "list": [ // required, should have at least one element, formatted like this one
     ["Target name (used only for errors & debugging, won't be displayed)", "target_id", 10]
   ],
-  "ms": 5000, //optional, default is every 5 seconds
-  "owner": "your_id", //required
-  "status": { //optional, if not an object (or undefined) no status will be loaded
-    "on": { //optional, if not an object no status 'on' will be loaded
-      "text": "your bots", //optional, if not a string no 'on' status will be loaded
-      "type": "WATCHING" //optional, if not a valid Discord.ActivityType no 'on' status will be loaded
+  "ms": 5000, // optional, default is every 5 seconds
+  "owner": "your_id", // required
+  "status": { // optional, if not an object (or undefined) no status will be loaded
+    "on": { // optional, if not an object no status 'on' will be loaded
+      "text": "your bots", // optional, if not a string no 'on' status will be loaded
+      "type": "WATCHING" // optional, if not a valid Discord.ActivityType no 'on' status will be loaded
     },
-    "off": { //same thing as status.on
+    "off": { // same thing as status.on
       "text": "alone",
       "type": "PLAYING"
     }
   },
-  "token": { //required
-    "str": "your_token", //required, your token or a string that, if evaled, returns a token
-    "toeval": false //optional, if not a boolean the token.str won't be evaled
+  "token": { // required
+    "str": "your_token", // required, your token or a string that, if evaled, returns a token
+    "toeval": false // optional, if not a boolean the token.str won't be evaled
   }
 });
 ```
