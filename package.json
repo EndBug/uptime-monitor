@@ -1,0 +1,43 @@
+{
+  "name": "uptime-monitor",
+  "version": "4.0.0",
+  "description": "A Discord bot that notifies you when one of the watched bots/users goes offline for a continued period of time (meant for bots, not so useful with users)",
+  "main": "dist/app.js",
+  "types": "dist/app.d.ts",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {
+    "discord.js": "^11.5.0"
+  },
+  "devDependencies": {
+    "husky": "^2.3.0",
+    "typescript": "^3.4.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndBug/uptime-monitor.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "online",
+    "downtime",
+    "discordapp"
+  ],
+  "author": "Federico Grandi <fgrandi30@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EndBug/uptime-monitor/issues"
+  },
+  "homepage": "https://github.com/EndBug/uptime-monitor#readme"
+}
