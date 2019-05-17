@@ -2,6 +2,8 @@
 import { ActivityType, Channel, TextChannel, Message, User } from 'discord.js';
 import { client, send_to } from './app';
 
+// #region Settings
+
 /**
  * Interface for the settings you use to start the bot.
  */
@@ -36,7 +38,7 @@ export interface Settings {
   other_owners?: string | string[]
 
   /**
-   * The user/guild channel (in the `'guildid/channelid'` format) to send the messages to. By default, this is the owner.
+   * The user/guild channel (in the `'guildID/channelID'` format) to send the messages to. By default, this is the owner.
    */
   send_to?: string
 
@@ -84,7 +86,7 @@ export interface CheckedSettings {
   owners: string[]
 
   /**
-   * The user/guild channel (in the `'guildid/channelid'` format) to send the messages to. By default, this is the owner.
+   * The user/guild channel (in the `'guildID/channelID'` format) to send the messages to. By default, this is the owner.
    */
   send_to: string
 
@@ -102,6 +104,7 @@ export interface CheckedSettings {
   token: string
 }
 
+// #endregion
 
 /**
  * Interface for a custom status from the settings.
@@ -121,12 +124,14 @@ export interface Status {
   url?: string
 }
 
+// #region targets
+
 /**
  * Interface that makes you quickly add targets in the settings.
  */
 export interface TargetLike extends Array<any> {
   /**
-   * A codename that will help recognize the target (noly for debugging purposes).
+   * A codename that will help recognize the target (only for debugging purposes).
    */
   0: string
 
@@ -147,15 +152,50 @@ export interface TargetLike extends Array<any> {
  * Class for every accepted target.
  */
 export class Target {
+  // #region Properties
+
+  /**
+  * A codename that identifies the target (only for debugging purposes).
+  */
   name: string
+
+  /**
+   * The Discord ID of the target.
+   */
   id: string
+
+  /**
+   * The number of minutes to wait before sending the notification.
+   */
   timeout: number
 
+  /**
+   * The currrently active interval (both 'watch' and 'alert' intervals get stored here).
+   */
   interval?: NodeJS.Timeout
+
+  /**
+   * The date of when the target has been found offline.
+   */
   offlineSince?: Date
+
+  /**
+   * The last notification message sent by the bot for this target.
+   */
   lastMessage?: Message
+
+  /**
+   * The last user object found for the target.
+   */
   cachedUser?: User
 
+  // #endregion
+
+  /**
+   * @param name A codename that will help recognize the target (only for debugging purposes).
+   * @param id The ID of the target. Make sure the target is connected to the bot through at least one guild.
+   * @param timeout The number of minutes the target has to be offline before the bot notifies you.
+   */
   constructor(name: string, id: string, timeout: number) {
     this.name = name;
     this.id = id;
@@ -257,6 +297,10 @@ export class Target {
   }
 }
 
+// #endregion
+
+
+// #region Utility functions
 /**
  * Type guard for a text channel.
  * @param c The element you want to check.
@@ -287,3 +331,5 @@ function now() {
 function longName(user: User) {
   return `${user.tag} (${user.id})`;
 }
+
+// #endregion

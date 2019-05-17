@@ -1,50 +1,7 @@
 import { Settings, CheckedSettings, Target, isTextChannel, TargetRejection, TargetLike } from './custom_types'; // eslint-disable-line no-unused-vars
 import { Client, User, TextChannel } from 'discord.js'; // eslint-disable-line no-unused-vars
 
-/**
- * Reads the user input, checks whether necessary parts were included and fills optional ones.
- * @param settings 
- */
-function checkSettings(settings: Settings): CheckedSettings {
-  //@ts-ignore
-  const result: CheckedSettings = {};
-
-  if (settings.commands) {
-    const {on, off, list} = settings.commands;
-    result.commands = {
-      on: typeof on == 'boolean' ? on : true,
-      off: typeof off == 'boolean' ? off : true,
-      list: typeof list == 'boolean' ? list : true,
-      help: true
-    };
-  } else {
-    result.commands = {
-      on: true,
-      off: true,
-      list: true,
-      help: true
-    };
-  }
-
-  result.list = settings.list || [];
-
-  result.refresh = settings.refresh || 5000;
-
-  if (!settings.owner_id) throw new Error('There has to be a main owner ID.');
-
-  result.owners = [settings.owner_id];
-  if (typeof settings.other_owners == 'string') result.owners.push(settings.other_owners);
-  else if (settings.other_owners instanceof Array) result.owners.push(...settings.other_owners);
-
-  result.send_to = settings.send_to || settings.owner_id;
-
-  result.status = settings.status || {};
-
-  if (!settings.token) throw new Error('There has to be a bot token!');
-  else result.token = settings.token;
-
-  return result;
-}
+// #region Exported variables
 
 /**
  * The client you're using.
@@ -70,6 +27,8 @@ export var list: Target[];
  * Whether the bot is active.
  */
 export var on = true;
+
+// #endregion
 
 client.on('error', console.error);
 client.on('warn', console.warn);
@@ -131,6 +90,53 @@ client.on('ready', async () => {
     process.exit(1);
   }
 });
+
+// #region Utility functions
+
+/**
+ * Reads the user input, checks whether necessary parts were included and fills optional ones.
+ * @param settings 
+ */
+function checkSettings(settings: Settings): CheckedSettings {
+  //@ts-ignore
+  const result: CheckedSettings = {};
+
+  if (settings.commands) {
+    const { on, off, list } = settings.commands;
+    result.commands = {
+      on: typeof on == 'boolean' ? on : true,
+      off: typeof off == 'boolean' ? off : true,
+      list: typeof list == 'boolean' ? list : true,
+      help: true
+    };
+  } else {
+    result.commands = {
+      on: true,
+      off: true,
+      list: true,
+      help: true
+    };
+  }
+
+  result.list = settings.list || [];
+
+  result.refresh = settings.refresh || 5000;
+
+  if (!settings.owner_id) throw new Error('There has to be a main owner ID.');
+
+  result.owners = [settings.owner_id];
+  if (typeof settings.other_owners == 'string') result.owners.push(settings.other_owners);
+  else if (settings.other_owners instanceof Array) result.owners.push(...settings.other_owners);
+
+  result.send_to = settings.send_to || settings.owner_id;
+
+  result.status = settings.status || {};
+
+  if (!settings.token) throw new Error('There has to be a bot token!');
+  else result.token = settings.token;
+
+  return result;
+}
 
 /**
  * Parses the `send_to` from the settings and return its `User` or `TextChannel` result.
@@ -222,3 +228,5 @@ export function setStatus(mode: boolean) {
     }
   });
 }
+
+// #endregion
