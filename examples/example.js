@@ -1,28 +1,27 @@
-var bot = require("uptime-monitor");
+const UptimeMonitor = require('uptime-monitor');
 
-bot({
-  "commands": {
-    "on": ["on", "up"],
-    "off": ["off", "down"]
+const bot = new UptimeMonitor.Bot({
+  commands: {
+    on: true,
+    off: true,
+    list: true
   },
-  "guild": "guild_id",
-  "list": [
-    ["Target name (used only for errors & debugging, won't be displayed)", "target_id", 10]
+  list: [
+    ['Its name', 'Its ID', 3]
   ],
-  "ms": 5000,
-  "owner": "your_id",
-  "status": {
-    "on": {
-      "text": "your bots",
-      "type": "WATCHING"
+  refresh: 5000,
+  owner_id: 'Your ID',
+  other_owners: ['Their IDs'],
+  send_to: 'Their ID or guildID/channelID',
+  status: {
+    on: {
+      name: 'text displayed while online',
+      type: 'WATCHING'
     },
-    "off": {
-      "text": "alone",
-      "type": "PLAYING"
+    off: {
+      name: 'text displayed by offline',
+      type: 'WATCHING'
     }
   },
-  "token": {
-    "str": "your_token",
-    "toeval": false
-  }
+  token: 'Your bot\'s token'
 });

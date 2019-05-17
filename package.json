@@ -1,24 +1,33 @@
 {
   "name": "uptime-monitor",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "A Discord bot that notifies you when one of the watched bots/users goes offline for a continued period of time (meant for bots, not so useful with users)",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "main": "dist/app.js",
+  "types": "dist/app.d.ts",
+  "directories": {
+    "example": "examples"
   },
+  "dependencies": {
+    "discord.js": "^11.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.1",
+    "husky": "^2.3.0",
+    "typescript": "^3.4.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node tests/test.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc"
+    }
+  },
+  "runkitExampleFilename": "examples/example.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EndBug/uptime-monitor.git"
-  },
-  "author": "Federico Grandi <fgrandi30@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/EndBug/uptime-monitor/issues"
-  },
-  "homepage": "https://github.com/EndBug/uptime-monitor#readme",
-  "dependencies": {
-    "discord.js": "^11.3.2"
   },
   "keywords": [
     "discord",
@@ -27,7 +36,10 @@
     "downtime",
     "discordapp"
   ],
-  "devDependencies": {
-    "nodemon": "^1.18.1"
-  }
+  "author": "Federico Grandi <fgrandi30@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EndBug/uptime-monitor/issues"
+  },
+  "homepage": "https://github.com/EndBug/uptime-monitor#readme"
 }
