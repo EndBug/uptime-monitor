@@ -173,6 +173,7 @@ export class Target {
       if (isOnline === false) {
         this.offlineSince = now();
         this.startAlert(refresh_ms);
+        console.log((this.longName() || `${this.name} (${this.id})`) + 'has been found offline, timer started.');
       }
     };
     this.interval = setInterval(watch, refresh_ms);
@@ -194,6 +195,7 @@ export class Target {
         }
         this.offlineSince = undefined;
         this.startWatching(refresh_ms);
+        console.log((this.longName() || `${this.name} (${this.id})`) + 'has come back online, alert canceled.');
       } else if (isOnline === false) {
         if (!this.offlineSince) this.offlineSince = now();
         if ((+(now()) - +(this.offlineSince)) > this.timeout*60000 && !this.lastMessage) {
@@ -208,6 +210,7 @@ export class Target {
             this.lastMessage = msg;
           }
         }
+        console.log((this.longName() || `${this.name} (${this.id})`) + 'has ecceeded maximum time, notifcation sent.');
       }
     };
     this.interval = setInterval(alert, refresh_ms);
