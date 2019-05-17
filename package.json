@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run build && node tests/test.js"
   },
   "husky": {
     "hooks": {
