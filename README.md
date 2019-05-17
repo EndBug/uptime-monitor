@@ -19,7 +19,7 @@ To use the bot, you'll need to create an object with these settings:
  - `other_owners`: the ID/an array with the IDs of other owners (people that can use the commands).
  - `send_to`: the user/guild channel (in the `'guildID/channelID'` format) to send the messages to. By default, this is the owner.
  - `status.on` & `status.off`: two objects with a `text` and a `type` that will be used for the bot presence.
- - `token.str`: your token.
+ - `token`: your token.
 
 In `list` every element has to follow this format: `[codeName, discordID, timeout]`, with `timeout` as a number. `codeName` is a name that will be used to identify the bot for debugging purposes; `timeout` is the number of minutes the bot has to wait to notify you: you can set this to zero, but it'll notify you even if your bot goes offline for a very little time.
 
