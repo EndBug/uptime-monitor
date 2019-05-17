@@ -10,12 +10,12 @@ function checkSettings(settings: Settings): CheckedSettings {
   const result: CheckedSettings = {};
 
   if (settings.commands) {
-    const {on, off, list, help} = settings.commands;
+    const {on, off, list} = settings.commands;
     result.commands = {
       on: typeof on == 'boolean' ? on : true,
       off: typeof off == 'boolean' ? off : true,
       list: typeof list == 'boolean' ? list : true,
-      help: typeof help == 'boolean' ? help : true
+      help: true
     };
   } else {
     result.commands = {
@@ -25,6 +25,8 @@ function checkSettings(settings: Settings): CheckedSettings {
       help: true
     };
   }
+
+  result.list = settings.list || [];
 
   result.refresh = settings.refresh || 5000;
 
@@ -79,6 +81,7 @@ client.on('debug', console.log);
 export class Bot {
   constructor(inputSettings: Settings, callback?: (bot: Bot) => void) {
     settings = checkSettings(inputSettings);
+    client.emit('debug', 'Using the following settings:\n' + JSON.stringify(settings, null, 2));
     client.login(settings.token)
       .then(() => {
         if (callback) callback(this);
@@ -120,6 +123,7 @@ client.on('ready', async () => {
     send_to = await loadSendTo();
     list = await loadTargets();
     startMonitoring();
+    require('./commands');
     setStatus(true);
   } catch (error) {
     await client.destroy();
@@ -137,9 +141,12 @@ async function loadSendTo() {
 
   if (splitted.length == 1) {
     const userID = splitted[0];
-    const user = await client.fetchUser(userID);
-    if (user) return user;
-    else throw new Error(`The bot can't find any user with this id: '${userID}'. Please check your settings: if you left the 'send_to' field empty then check the owner id; if you wrote a channel id, rewrite that as 'guildID/channelID'.`);
+    try {
+      const user = await client.fetchUser(userID);
+      return user;
+    } catch (error) {
+      throw new Error(`The bot can't find any user with this id: '${userID}'. Please check your settings: if you left the 'send_to' field empty then check the owner id; if you wrote a channel id, rewrite that as 'guildID/channelID'.`);
+    }
   } else {
     const [guildID, channelID] = splitted;
     const guild = client.guilds.get(guildID);
@@ -148,7 +155,7 @@ async function loadSendTo() {
       if (channel) {
         if (isTextChannel(channel)) return channel;
         else throw new Error(`The bot has found your channel, but doesn't seem to be a text channel: type ${channel.type}. Please check your channel ID.`);
-      } else throw new Error(`The bot can't find any channel with this id in your guild (${guildID}): '${channelID}. Please check your settings: it should be written as 'guildID/channelID'.'`);
+      } else throw new Error(`The bot can't find any channel with this id in your guild (${guildID}): '${channelID}'. Please check your settings: it should be written as 'guildID/channelID'.'`);
     } else throw new Error(`The bot can't find any guild with this id: '${guildID}'. Please check your settings: it should be written as 'guildID/channelID'.`);
   }
 }
@@ -170,12 +177,16 @@ async function loadTargets() {
     });
   }
 
-  let msg = 'The following targets have been rejected:';
-  for (const rejection of rejected)
-    msg += `\n\`${rejection.target[0]} (${rejection.target[1]})\` -> ${rejection.reason}`;
-  msg += (result.length ? `\n\`${result.length}\` targets have been loaded.` : 'No other targets have been loaded.');
-  send_to.send(msg);
-  client.emit('error', msg);
+  if (rejected.length) {
+    let msg = 'The following targets have been rejected:';
+    for (const rejection of rejected)
+      msg += `\n\`${rejection.target[0]} (${rejection.target[1]})\` -> ${rejection.reason}`;
+    msg += (result.length ? `\n\`${result.length}\` targets have been loaded.` : 'No other targets have been loaded.');
+    send_to.send(msg);
+    client.emit('error', msg);
+  } else if (!result.length) {
+    client.emit('warn', 'WARN! No targets have been set in the code settings.');
+  }
 
   return result;
 }
@@ -205,6 +216,9 @@ export function setStatus(mode: boolean) {
     status: mode ? 'online': 'dnd',
     game: status
   }); else return client.user.setPresence({
-    status: mode ? 'online' : 'dnd'
+    status: mode ? 'online' : 'dnd',
+    game: {
+      name: ''
+    }
   });
 }

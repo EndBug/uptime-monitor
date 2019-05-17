@@ -13,7 +13,6 @@ export interface Settings {
     on?: boolean
     off?: boolean
     list?: boolean
-    help: boolean
   }
 
   /**
@@ -111,7 +110,7 @@ export interface Status {
   /**
    * Custom text to show after the type part.
    */
-  text: string
+  name: string
   /**
    * By default: `"PLAYING"`.
    */
@@ -197,10 +196,17 @@ export class Target {
         this.startWatching(refresh_ms);
       } else if (isOnline === false) {
         if (!this.offlineSince) this.offlineSince = now();
-        if ((+(now()) - +(this.offlineSince)) > this.timeout) {
+        if ((+(now()) - +(this.offlineSince)) > this.timeout*60000 && !this.lastMessage) {
           let message = await send_to.send(`:red_circle: \`${this.cachedUser ? longName(this.cachedUser) : this.name}\` has been offline for \`${this.getDowntime()}\` minutes.`);
           if (message instanceof Array) message = message[0];
           this.lastMessage = message;
+        } else if (this.lastMessage) {
+          const str = `:red_circle: \`${this.cachedUser ? longName(this.cachedUser) : this.name}\` has been offline for \`${this.getDowntime()}\` minutes.`;
+          if (str != this.lastMessage.content) {
+            let msg = await this.lastMessage.edit(str);
+            if (msg instanceof Array) msg = msg[0];
+            this.lastMessage = msg;
+          }
         }
       }
     };

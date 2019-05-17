@@ -3,7 +3,7 @@ import { client, settings, on, stopMonitoring, setStatus, startMonitoring, list 
 client.on('message', msg => {
   const splitted = msg.content.split(' ');
 
-  if (msg.channel.type != 'dm' && splitted[0].replace(/[\\<>@#&!]/g, '') != client.user.id) return;
+  if (msg.author.bot || msg.channel.type != 'dm' && splitted[0].replace(/[\\<>@#&!]/g, '') != client.user.id) return;
 
   if (!settings.owners.includes(msg.author.id)) msg.reply('Sorry, you\'re not allowed to use this bot. If you believe this is an error, please contect the bot owner.');
 
@@ -21,19 +21,22 @@ client.on('message', msg => {
 
   switch (command) {
     case 'on':
-      if (on) return msg.channel.send('The bot is already on.');
+      if (on) return msg.channel.send('The bot is already `on`.');
       startMonitoring();
       setStatus(true);
+      msg.channel.send('The bot has been set to `on`.');
       break;
 
     case 'off':
-      if (!on) return msg.channel.send('The bot is already off.');
+      if (!on) return msg.channel.send('The bot is already `off`.');
       stopMonitoring();
       setStatus(false);
+      msg.channel.send('The bot has been set to `off`.');
       break;
 
     case 'list':
       (()=>{
+        if (!list.length) return msg.channel.send('There are no currently tracked targets.');
         let str = 'These are the currently tracked targets:';
         for (const target of list) str += `\n- ${target.longName() || `\`${target.name} (${target.id})\``}`;
         msg.channel.send(str);
