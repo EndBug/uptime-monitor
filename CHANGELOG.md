@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.0.1](https://github.com/EndBug/uptime-monitor/tree/v4.0.1)
+**Fix**
+- Minor doc fix
+
+***
 ## [4.0.0](https://github.com/EndBug/uptime-monitor/tree/v4.0.0)
 **Changed**
 - Complete bot re-write in TypeScript
