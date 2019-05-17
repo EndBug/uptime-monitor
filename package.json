@@ -24,6 +24,7 @@
       "pre-commit": "tsc"
     }
   },
+  "runkitExampleFilename": "examples/example.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EndBug/uptime-monitor.git"
