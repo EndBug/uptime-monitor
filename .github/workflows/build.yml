@@ -22,12 +22,13 @@ jobs:
       run: npm run build
 
     - name: Commit changes
-      uses: EndBug/add-and-commit@v2.0.0
+      uses: EndBug/add-and-commit@v2.1.0
       with:
         author_name: Federico Grandi
         author_email: fgrandi30@gmail.com
         message: "[auto] Update dist"
         path: dist
         pattern: "*.*"
+        force: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
