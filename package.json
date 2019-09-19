@@ -12,17 +12,11 @@
   },
   "devDependencies": {
     "@types/node": "^12.0.1",
-    "husky": "^2.3.0",
     "typescript": "^3.4.5"
   },
   "scripts": {
     "build": "tsc",
     "test": "npm run build && node tests/test.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsc"
-    }
   },
   "runkitExampleFilename": "examples/example.js",
   "repository": {
