@@ -1,4 +1,11 @@
 "use strict";
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = require("./app");
 app_1.client.on('message', function (msg) {
@@ -8,7 +15,7 @@ app_1.client.on('message', function (msg) {
     if (!app_1.settings.owners.includes(msg.author.id))
         msg.reply('Sorry, you\'re not allowed to use this bot. If you believe this is an error, please contect the bot owner.');
     var command;
-    var args = splitted.slice();
+    var args = __spreadArrays(splitted);
     command = args.shift() || '';
     if (msg.channel.type != 'dm')
         command = args.shift() || '';
