@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.2](https://github.com/EndBug/uptime-monitor/tree/v4.0.2)
+**Improvements**
+- Update a lot of dependencies
+- Add GitHub Action to build & publish package automatically
+- Add LGTM's code quality badge
+
+***
 ## [4.0.1](https://github.com/EndBug/uptime-monitor/tree/v4.0.1)
 **Fix**
 - Minor doc fix
