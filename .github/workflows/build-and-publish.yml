@@ -78,7 +78,7 @@ jobs:
 
     - name: Publish package to GPR
       # if: steps.check.outputs.changed == 'true'
-      run: npm publish
+      run: 'echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc && npm publish'
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
