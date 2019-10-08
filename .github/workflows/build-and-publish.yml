@@ -74,7 +74,7 @@ jobs:
       uses: actions/setup-node@v1.2.0
       with:
         registry-url: 'https://npm.pkg.github.com/'
-        scope: @endbug
+        scope: '@endbug'
 
     - name: Publish package to GPR
       # if: steps.check.outputs.changed == 'true'
