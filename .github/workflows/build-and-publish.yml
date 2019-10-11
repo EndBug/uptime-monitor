@@ -76,10 +76,11 @@ jobs:
         registry-url: 'https://npm.pkg.github.com/'
         scope: '@endbug'
 
+    - name: Set up package for GPR
+      # if: steps.check.outputs.changed == 'true'
+      run: npm run gpr-setup
+
     - name: Publish package to GPR
       # if: steps.check.outputs.changed == 'true'
-      run: 'npm set //npm.pkg.github.com/:_authToken $NODE_AUTH_TOKEN && npm publish'
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      
+      run: npm publish
+            

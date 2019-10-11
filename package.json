@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "gpr-setup": "node scripts/gpr.js",
     "test": "npm run build && node tests/test.js"
   },
   "runkitExampleFilename": "examples/example.js",
