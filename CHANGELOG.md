@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.3](https://github.com/EndBug/uptime-monitor/tree/v4.0.3)
+**Improvements**
+- Update some dependencies
+- Fix GitHub workflow to build & publish package automatically
+
+***
 ## [4.0.2](https://github.com/EndBug/uptime-monitor/tree/v4.0.2)
 **Improvements**
 - Update a lot of dependencies
