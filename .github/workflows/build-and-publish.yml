@@ -83,4 +83,5 @@ jobs:
     - name: Publish package to GPR
       # if: steps.check.outputs.changed == 'true'
       run: npm publish
-            
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
