@@ -8,10 +8,10 @@ jobs:
 
     steps: 
     - name: Checkout repository
-      uses: actions/checkout@v1.0.0
+      uses: actions/checkout@v2
 
     - name: Set up Node.js
-      uses: actions/setup-node@v1.2.0
+      uses: actions/setup-node@v1
       with:
         node-version: '10.x'
     
@@ -22,10 +22,8 @@ jobs:
       run: npm run build
 
     - name: Commit changes
-      uses: EndBug/add-and-commit@v2.1.0
+      uses: EndBug/add-and-commit@v2
       with:
-        author_name: Federico Grandi
-        author_email: fgrandi30@gmail.com
         message: "[auto] Update dist"
         path: dist
         pattern: "*.*"
@@ -41,12 +39,12 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v1.0.0
+      uses: actions/checkout@v2
       with:
         ref: master
 
     - name: Check version changes
-      uses: EndBug/version-check@v1.0.0
+      uses: EndBug/version-check@v1
       id: check
 
     - name: Version update detected
@@ -55,7 +53,7 @@ jobs:
 
     - name: Set up Node.js for NPM
       if: steps.check.outputs.changed == 'true'
-      uses: actions/setup-node@v1.2.0
+      uses: actions/setup-node@v1
       with:
         registry-url: 'https://registry.npmjs.org'
 
@@ -71,7 +69,7 @@ jobs:
 
     - name: Set up Node.js for GPR
       if: steps.check.outputs.changed == 'true'
-      uses: actions/setup-node@v1.2.0
+      uses: actions/setup-node@v1
       with:
         registry-url: 'https://npm.pkg.github.com/'
         scope: '@endbug'
