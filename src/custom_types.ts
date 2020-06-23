@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-unused-vars
-import { ActivityType, Channel, TextChannel, Message, User } from 'discord.js';
-import { client, send_to } from './app';
+import { ActivityType, Channel, TextChannel, Message, User } from 'discord.js'
+import { client, send_to } from './app'
 
 // #region Settings
 
@@ -197,9 +196,9 @@ export class Target {
    * @param timeout The number of minutes the target has to be offline before the bot notifies you.
    */
   constructor(name: string, id: string, timeout: number) {
-    this.name = name;
-    this.id = id;
-    this.timeout = timeout;
+    this.name = name
+    this.id = id
+    this.timeout = timeout
   }
 
   /**
@@ -207,17 +206,17 @@ export class Target {
    * @param refresh_ms The number of ms to run the cycle with.
    */
   startWatching(refresh_ms: number) {
-    this.stop();
+    this.stop()
     const watch = async () => {
-      const isOnline = await this.check();
+      const isOnline = await this.check()
       if (isOnline === false) {
-        this.offlineSince = now();
-        this.startAlert(refresh_ms);
-        console.log((this.longName() || `${this.name} (${this.id})`) + 'has been found offline, timer started.');
+        this.offlineSince = now()
+        this.startAlert(refresh_ms)
+        console.log((this.longName() || `${this.name} (${this.id})`) + 'has been found offline, timer started.')
       }
-    };
-    this.interval = setInterval(watch, refresh_ms);
-    watch();
+    }
+    this.interval = setInterval(watch, refresh_ms)
+    watch()
   }
 
   /**
@@ -225,60 +224,60 @@ export class Target {
    * @param refresh_ms The number of ms to run the cycle with.
    */
   startAlert(refresh_ms: number) {
-    this.stop();
+    this.stop()
     const alert = async () => {
-      const isOnline = await this.check();
+      const isOnline = await this.check()
       if (isOnline === true) {
         if (this.offlineSince && (+(now()) - +(this.offlineSince)) > this.timeout && this.lastMessage) {
-          this.lastMessage.edit(`:white_check_mark: \`${this.cachedUser ? longName(this.cachedUser) : this.name}\` is now back online!`);
-          this.lastMessage = undefined;
+          this.lastMessage.edit(`:white_check_mark: \`${this.cachedUser ? longName(this.cachedUser) : this.name}\` is now back online!`)
+          this.lastMessage = undefined
         }
-        this.offlineSince = undefined;
-        this.startWatching(refresh_ms);
-        console.log((this.longName() || `${this.name} (${this.id})`) + 'has come back online, alert canceled.');
+        this.offlineSince = undefined
+        this.startWatching(refresh_ms)
+        console.log((this.longName() || `${this.name} (${this.id})`) + 'has come back online, alert canceled.')
       } else if (isOnline === false) {
-        if (!this.offlineSince) this.offlineSince = now();
-        if ((+(now()) - +(this.offlineSince)) > this.timeout*60000 && !this.lastMessage) {
-          let message = await send_to.send(`:red_circle: \`${this.cachedUser ? longName(this.cachedUser) : this.name}\` has been offline for \`${this.getDowntime()}\` minutes.`);
-          if (message instanceof Array) message = message[0];
-          this.lastMessage = message;
+        if (!this.offlineSince) this.offlineSince = now()
+        if ((+(now()) - +(this.offlineSince)) > this.timeout * 60000 && !this.lastMessage) {
+          let message = await send_to.send(`:red_circle: \`${this.cachedUser ? longName(this.cachedUser) : this.name}\` has been offline for \`${this.getDowntime()}\` minutes.`)
+          if (message instanceof Array) message = message[0]
+          this.lastMessage = message
         } else if (this.lastMessage) {
-          const str = `:red_circle: \`${this.cachedUser ? longName(this.cachedUser) : this.name}\` has been offline for \`${this.getDowntime()}\` minutes.`;
+          const str = `:red_circle: \`${this.cachedUser ? longName(this.cachedUser) : this.name}\` has been offline for \`${this.getDowntime()}\` minutes.`
           if (str != this.lastMessage.content) {
-            let msg = await this.lastMessage.edit(str);
-            if (msg instanceof Array) msg = msg[0];
-            this.lastMessage = msg;
+            let msg = await this.lastMessage.edit(str)
+            if (msg instanceof Array) msg = msg[0]
+            this.lastMessage = msg
           }
         }
-        console.log((this.longName() || `${this.name} (${this.id})`) + 'has ecceeded maximum time, notifcation sent.');
+        console.log((this.longName() || `${this.name} (${this.id})`) + 'has ecceeded maximum time, notifcation sent.')
       }
-    };
-    this.interval = setInterval(alert, refresh_ms);
-    alert();
+    }
+    this.interval = setInterval(alert, refresh_ms)
+    alert()
   }
-  
+
   /**
    * Clears the current interval.
    */
   stop() {
-    if (this.interval) clearInterval(this.interval);
+    if (this.interval) clearInterval(this.interval)
   }
 
   /**
    * Returns whether the target is online; if the target is unreachable it stop monitoring it.
    */
   async check() {
-    const user = await client.fetchUser(this.id);
+    const user = await client.fetchUser(this.id)
     if (user) {
-      this.cachedUser = user;
-      const {status} = user.presence;
-      if (status == 'offline') return false;
-      else return true;
+      this.cachedUser = user
+      const { status } = user.presence
+      if (status == 'offline') return false
+      else return true
     } else {
-      this.stop();
-      const error = `Target '${this.name} (id: ${this.id}) has become unreachable: I've stopped watching it.`;
-      send_to.send(error);
-      client.emit('error', error);
+      this.stop()
+      const error = `Target '${this.name} (id: ${this.id}) has become unreachable: I've stopped watching it.`
+      send_to.send(error)
+      client.emit('error', error)
     }
   }
 
@@ -286,14 +285,14 @@ export class Target {
    * Returns the rounded number of minutes the target has been offline.
    */
   getDowntime() {
-    return Math.round((+(now()) - +(this.offlineSince || now())) / 60000);
+    return Math.round((+(now()) - +(this.offlineSince || now())) / 60000)
   }
 
   /**
    * Returns the displayable long name of the last cached user for the target.
    */
   longName() {
-    return this.cachedUser ? longName(this.cachedUser) : undefined;
+    return this.cachedUser ? longName(this.cachedUser) : undefined
   }
 }
 
@@ -306,7 +305,7 @@ export class Target {
  * @param c The element you want to check.
  */
 export function isTextChannel(c: any): c is TextChannel {
-  return (c instanceof Channel && c.type == 'text');
+  return (c instanceof Channel && c.type == 'text')
 }
 
 /**
@@ -321,7 +320,7 @@ export interface TargetRejection {
  * Returns the current Date.
  */
 function now() {
-  return new Date();
+  return new Date()
 }
 
 /**
@@ -329,7 +328,7 @@ function now() {
  * @param user The user or its ID.
  */
 function longName(user: User) {
-  return `${user.tag} (${user.id})`;
+  return `${user.tag} (${user.id})`
 }
 
 // #endregion

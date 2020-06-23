@@ -1,4 +1,4 @@
-const UptimeMonitor = require('uptime-monitor');
+const UptimeMonitor = require('uptime-monitor')
 
 const bot = new UptimeMonitor.Bot({
   commands: {
@@ -24,4 +24,4 @@ const bot = new UptimeMonitor.Bot({
     }
   },
   token: 'Your bot\'s token'
-});
+})

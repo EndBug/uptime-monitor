@@ -11,12 +11,16 @@
     "discord.js": "^11.5.0"
   },
   "devDependencies": {
-    "@types/node": "^12.0.1",
+    "@types/node": "^12.12.47",
+    "@typescript-eslint/eslint-plugin": "^3.4.0",
+    "@typescript-eslint/parser": "^3.4.0",
+    "eslint": "^7.3.1",
     "typescript": "^3.4.5"
   },
   "scripts": {
     "build": "tsc",
     "gpr-setup": "node scripts/gpr.js",
+    "lint": "eslint \"./src/**/*.ts\" --fix",
     "test": "npm run build && node tests/test.js"
   },
   "runkitExampleFilename": "examples/example.js",

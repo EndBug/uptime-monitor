@@ -1,8 +1,8 @@
 /* eslint-disable no-unreachable */
-const UptimeMonitor = require('../dist/app');
+const UptimeMonitor = require('../dist/app')
 
 // Please edit the config below, then delete the following line:
-throw new Error('Please configure your test file at tests/test.js!');
+throw new Error('Please configure your test file at tests/test.js!')
 
 const bot = new UptimeMonitor.Bot({
   owner_id: '',
@@ -21,11 +21,11 @@ const bot = new UptimeMonitor.Bot({
   status: {
     on: {
       name: 'online bots.',
-      type: 'LISTENING',
+      type: 'LISTENING'
     },
     off: {
       name: 'your bots...',
-      type: 'WATCHING',
+      type: 'WATCHING'
     }
   }
-});
+})
