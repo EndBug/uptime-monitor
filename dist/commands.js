@@ -69,7 +69,7 @@ app_1.client.on('message', function (msg) {
 function getCommands() {
     var result = [];
     for (var command in app_1.settings.commands) {
-        //@ts-ignore
+        // @ts-ignore
         if (app_1.settings.commands[command])
             result.push(command);
     }
