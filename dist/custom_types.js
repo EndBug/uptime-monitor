@@ -36,7 +36,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// eslint-disable-next-line no-unused-vars
 var discord_js_1 = require("discord.js");
 var app_1 = require("./app");
 /**

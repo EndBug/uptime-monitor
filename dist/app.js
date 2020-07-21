@@ -36,8 +36,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var custom_types_1 = require("./custom_types"); // eslint-disable-line no-unused-vars
-var discord_js_1 = require("discord.js"); // eslint-disable-line no-unused-vars
+var custom_types_1 = require("./custom_types");
+var discord_js_1 = require("discord.js");
 // #region Exported variables
 /**
  * The client you're using.
@@ -143,7 +143,7 @@ exports.client.on('ready', function () { return __awaiter(void 0, void 0, void 0
  */
 function checkSettings(settings) {
     var _a;
-    //@ts-ignore
+    // @ts-ignore
     var result = {};
     if (settings.commands) {
         var _b = settings.commands, on_1 = _b.on, off = _b.off, list_1 = _b.list;
