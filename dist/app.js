@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.setStatus = exports.stopMonitoring = exports.startMonitoring = exports.Bot = exports.on = exports.list = exports.send_to = exports.settings = exports.client = void 0;
 var custom_types_1 = require("./custom_types");
 var discord_js_1 = require("discord.js");
 // #region Exported variables
@@ -76,7 +77,7 @@ var Bot = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         name = set[0], id = set[1], timeout = set[2];
-                        return [4 /*yield*/, exports.client.fetchUser(id)];
+                        return [4 /*yield*/, exports.client.users.fetch(id)];
                     case 1:
                         user = _a.sent();
                         if (user) {
@@ -195,19 +196,21 @@ function loadSendTo() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, exports.client.fetchUser(userID)];
+                    return [4 /*yield*/, exports.client.users.fetch(userID)];
                 case 2:
                     user = _a.sent();
                     return [2 /*return*/, user];
                 case 3:
                     error_2 = _a.sent();
                     throw new Error("The bot can't find any user with this id: '" + userID + "'. Please check your settings: if you left the 'send_to' field empty then check the owner id; if you wrote a channel id, rewrite that as 'guildID/channelID'.");
-                case 4: return [3 /*break*/, 6];
+                case 4: return [3 /*break*/, 7];
                 case 5:
                     guildID = splitted[0], channelID = splitted[1];
-                    guild = exports.client.guilds.get(guildID);
+                    return [4 /*yield*/, exports.client.guilds.fetch(guildID)];
+                case 6:
+                    guild = _a.sent();
                     if (guild) {
-                        channel = guild.channels.get(channelID);
+                        channel = guild.channels.cache.get(channelID);
                         if (channel) {
                             if (custom_types_1.isTextChannel(channel))
                                 return [2 /*return*/, channel];
@@ -219,8 +222,8 @@ function loadSendTo() {
                     }
                     else
                         throw new Error("The bot can't find any guild with this id: '" + guildID + "'. Please check your settings: it should be written as 'guildID/channelID'.");
-                    _a.label = 6;
-                case 6: return [2 /*return*/];
+                    _a.label = 7;
+                case 7: return [2 /*return*/];
             }
         });
     });
@@ -242,7 +245,7 @@ function loadTargets() {
                     if (!(_i < _a.length)) return [3 /*break*/, 4];
                     current = _a[_i];
                     name_1 = current[0], id = current[1], timeout = current[2];
-                    return [4 /*yield*/, exports.client.fetchUser(id)];
+                    return [4 /*yield*/, exports.client.users.fetch(id)];
                 case 2:
                     user = _c.sent();
                     if (user)
@@ -265,7 +268,7 @@ function loadTargets() {
                         }
                         msg += (result.length ? "\n`" + result.length + "` targets have been loaded." : 'No other targets have been loaded.');
                         exports.send_to.send(msg);
-                        exports.client.emit('error', msg);
+                        exports.client.emit('error', new Error(msg));
                     }
                     else if (!result.length) {
                         exports.client.emit('warn', 'WARN! No targets have been set in the code settings.');
@@ -300,20 +303,15 @@ exports.stopMonitoring = stopMonitoring;
  * @param mode Whether to set the bot online (`true`) or offline (`false`)
  */
 function setStatus(mode) {
+    var _a;
     exports.on = mode;
     var status = exports.settings.status[mode ? 'on' : 'off'];
-    if (status)
-        return exports.client.user.setPresence({
-            status: mode ? 'online' : 'dnd',
-            game: status
-        });
-    else
-        return exports.client.user.setPresence({
-            status: mode ? 'online' : 'dnd',
-            game: {
-                name: ''
-            }
-        });
+    return (_a = exports.client.user) === null || _a === void 0 ? void 0 : _a.setPresence({
+        status: mode ? 'online' : 'dnd',
+        activity: status || {
+            name: ''
+        }
+    });
 }
 exports.setStatus = setStatus;
 // #endregion

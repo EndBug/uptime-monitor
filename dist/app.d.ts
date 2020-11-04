@@ -48,4 +48,4 @@ export declare function stopMonitoring(): void;
  * Sets the initial status for the bot, if one is set.
  * @param mode Whether to set the bot online (`true`) or offline (`false`)
  */
-export declare function setStatus(mode: boolean): Promise<import("discord.js").ClientUser>;
+export declare function setStatus(mode: boolean): Promise<import("discord.js").Presence> | undefined;

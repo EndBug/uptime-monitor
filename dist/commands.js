@@ -9,8 +9,9 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = require("./app");
 app_1.client.on('message', function (msg) {
+    var _a;
     var splitted = msg.content.split(' ');
-    if (msg.author.bot || msg.channel.type != 'dm' && splitted[0].replace(/[\\<>@#&!]/g, '') != app_1.client.user.id)
+    if (msg.author.bot || msg.channel.type != 'dm' && splitted[0].replace(/[\\<>@#&!]/g, '') != ((_a = app_1.client.user) === null || _a === void 0 ? void 0 : _a.id))
         return;
     if (!app_1.settings.owners.includes(msg.author.id))
         msg.reply('Sorry, you\'re not allowed to use this bot. If you believe this is an error, please contect the bot owner.');

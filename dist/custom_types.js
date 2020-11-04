@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isTextChannel = exports.Target = void 0;
 var discord_js_1 = require("discord.js");
 var app_1 = require("./app");
 /**
@@ -150,7 +151,7 @@ var Target = /** @class */ (function () {
             var user, status_1, error;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, app_1.client.fetchUser(this.id)];
+                    case 0: return [4 /*yield*/, app_1.client.users.fetch(this.id)];
                     case 1:
                         user = _a.sent();
                         if (user) {
@@ -165,7 +166,7 @@ var Target = /** @class */ (function () {
                             this.stop();
                             error = "Target '" + this.name + " (id: " + this.id + ") has become unreachable: I've stopped watching it.";
                             app_1.send_to.send(error);
-                            app_1.client.emit('error', error);
+                            app_1.client.emit('error', new Error(error));
                         }
                         return [2 /*return*/];
                 }
