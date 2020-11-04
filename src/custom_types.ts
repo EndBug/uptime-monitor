@@ -267,7 +267,7 @@ export class Target {
    * Returns whether the target is online; if the target is unreachable it stop monitoring it.
    */
   async check() {
-    const user = await client.fetchUser(this.id)
+    const user = await client.users.fetch(this.id)
     if (user) {
       this.cachedUser = user
       const { status } = user.presence
@@ -277,7 +277,7 @@ export class Target {
       this.stop()
       const error = `Target '${this.name} (id: ${this.id}) has become unreachable: I've stopped watching it.`
       send_to.send(error)
-      client.emit('error', error)
+      client.emit('error', new Error(error))
     }
   }
 

@@ -3,7 +3,7 @@ import { client, settings, on, stopMonitoring, setStatus, startMonitoring, list 
 client.on('message', msg => {
   const splitted = msg.content.split(' ')
 
-  if (msg.author.bot || msg.channel.type != 'dm' && splitted[0].replace(/[\\<>@#&!]/g, '') != client.user.id) return
+  if (msg.author.bot || msg.channel.type != 'dm' && splitted[0].replace(/[\\<>@#&!]/g, '') != client.user?.id) return
 
   if (!settings.owners.includes(msg.author.id)) msg.reply('Sorry, you\'re not allowed to use this bot. If you believe this is an error, please contect the bot owner.')
 
@@ -15,7 +15,7 @@ client.on('message', msg => {
   command = command.toLowerCase()
 
   const available = getCommands()
- 
+
   if (!Object.keys(settings.commands).includes(command)) return msg.reply(`Unknown command. The available commands are: \`${available.join(' ')}\``)
   if (!available.includes(command)) return msg.reply(`This command has been disabled in the settings. The available commands are: \`${available.join(' ')}\``)
 
@@ -35,7 +35,7 @@ client.on('message', msg => {
       break
 
     case 'list':
-      (()=>{
+      (() => {
         if (!list.length) return msg.channel.send('There are no currently tracked targets.')
         let str = 'These are the currently tracked targets:'
         for (const target of list) str += `\n- ${target.longName() || `\`${target.name} (${target.id})\``}`
@@ -44,11 +44,11 @@ client.on('message', msg => {
       break
 
     case 'help':
-      msg.channel.send('These are the currently available commands:'+
+      msg.channel.send('These are the currently available commands:' +
         (settings.commands.on ? '\n- `on` -> Sets the bot in online mode.' : '') +
         (settings.commands.off ? '\n- `off` -> Sets the bot in offline mode.' : '') +
         (settings.commands.list ? '\n- `list` -> Shows you the currently tracked targets.' : '') +
-        (settings.commands.help ? '\n- `help` -> Shows you this message.': '')
+        (settings.commands.help ? '\n- `help` -> Shows you this message.' : '')
       )
       break
 

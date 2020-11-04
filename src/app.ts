@@ -53,7 +53,7 @@ export class Bot {
    */
   async add(set: TargetLike) {
     const [name, id, timeout] = set
-    const user = await client.fetchUser(id)
+    const user = await client.users.fetch(id)
     if (user) {
       const target = new Target(name, id, timeout)
       const index = list.push(target) - 1
@@ -148,16 +148,16 @@ async function loadSendTo() {
   if (splitted.length == 1) {
     const userID = splitted[0]
     try {
-      const user = await client.fetchUser(userID)
+      const user = await client.users.fetch(userID)
       return user
     } catch (error) {
       throw new Error(`The bot can't find any user with this id: '${userID}'. Please check your settings: if you left the 'send_to' field empty then check the owner id; if you wrote a channel id, rewrite that as 'guildID/channelID'.`)
     }
   } else {
     const [guildID, channelID] = splitted
-    const guild = client.guilds.get(guildID)
+    const guild = await client.guilds.fetch(guildID)
     if (guild) {
-      const channel = guild.channels.get(channelID)
+      const channel = guild.channels.cache.get(channelID)
       if (channel) {
         if (isTextChannel(channel)) return channel
         else throw new Error(`The bot has found your channel, but doesn't seem to be a text channel: type ${channel.type}. Please check your channel ID.`)
@@ -175,7 +175,7 @@ async function loadTargets() {
 
   for (const current of settings.list) {
     const [name, id, timeout] = current
-    const user = await client.fetchUser(id)
+    const user = await client.users.fetch(id)
     if (user) result.push(new Target(name, id, timeout))
     else rejected.push({
       target: current,
@@ -189,7 +189,7 @@ async function loadTargets() {
       msg += `\n\`${rejection.target[0]} (${rejection.target[1]})\` -> ${rejection.reason}`
     msg += (result.length ? `\n\`${result.length}\` targets have been loaded.` : 'No other targets have been loaded.')
     send_to.send(msg)
-    client.emit('error', msg)
+    client.emit('error', new Error(msg))
   } else if (!result.length) {
     client.emit('warn', 'WARN! No targets have been set in the code settings.')
   }
@@ -218,12 +218,10 @@ export function stopMonitoring() {
 export function setStatus(mode: boolean) {
   on = mode
   const status = settings.status[mode ? 'on' : 'off']
-  if (status) return client.user.setPresence({
+
+  return client.user?.setPresence({
     status: mode ? 'online' : 'dnd',
-    game: status
-  }); else return client.user.setPresence({
-    status: mode ? 'online' : 'dnd',
-    game: {
+    activity: status || {
       name: ''
     }
   })
