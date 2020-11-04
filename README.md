@@ -1,4 +1,4 @@
-# uptime-monitor [![NPM version](https://badge.fury.io/js/uptime-monitor.svg)](https://npmjs.org/package/uptime-monitor) ![David](https://david-dm.org/EndBug/uptime-monitor.svg) [![npm](https://img.shields.io/npm/dt/uptime-monitor.svg)](https://npmjs.org/package/uptime-monitor) [![LGTM code quality](https://img.shields.io/lgtm/grade/javascript/github/EndBug/uptime-monitor?label=Code%20quality)](https://lgtm.com/projects/g/EndBug/uptime-monitor/context:javascript)
+# uptime-monitor [![NPM version](https://badge.fury.io/js/uptime-monitor.svg)](https://npmjs.org/package/uptime-monitor) [![npm](https://img.shields.io/npm/dt/uptime-monitor.svg)](https://npmjs.org/package/uptime-monitor) [![LGTM code quality](https://img.shields.io/lgtm/grade/javascript/github/EndBug/uptime-monitor?label=Code%20quality)](https://lgtm.com/projects/g/EndBug/uptime-monitor/context:javascript)
 
 A Discord bot that notifies you when one of the watched bots/users goes offline for a continued period of time.
 
