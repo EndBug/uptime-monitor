@@ -23,12 +23,8 @@
     "build": "tsc",
     "gpr-setup": "node scripts/gpr.js",
     "lint": "eslint \"./src/**/*.ts\" --fix",
+    "prepare": "husky install",
     "test": "npm run build && node tests/test.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run build && npm run lint && git add dist"
-    }
   },
   "runkitExampleFilename": "examples/example.js",
   "repository": {
