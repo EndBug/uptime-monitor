@@ -16,19 +16,15 @@
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^3.10.1",
     "eslint": "^7.12.1",
-    "husky": "^4.3.0",
+    "husky": "^6.0.0",
     "typescript": "^3.9.7"
   },
   "scripts": {
     "build": "tsc",
     "gpr-setup": "node scripts/gpr.js",
     "lint": "eslint \"./src/**/*.ts\" --fix",
+    "prepare": "husky install",
     "test": "npm run build && node tests/test.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run build && npm run lint && git add dist"
-    }
   },
   "runkitExampleFilename": "examples/example.js",
   "repository": {
