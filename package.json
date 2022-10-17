@@ -8,7 +8,7 @@
     "example": "examples"
   },
   "dependencies": {
-    "discord.js": "^12.4.1"
+    "discord.js": "^14.6.0"
   },
   "devDependencies": {
     "@types/node": "^12.19.3",
