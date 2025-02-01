@@ -249,7 +249,7 @@ export class Target {
             this.lastMessage = msg
           }
         }
-        console.log((this.longName() || `${this.name} (${this.id})`) + 'has ecceeded maximum time, notifcation sent.')
+        console.log((this.longName() || `${this.name} (${this.id})`) + 'has exceeded maximum time, notification sent.')
       }
     }
     this.interval = setInterval(alert, refresh_ms)
