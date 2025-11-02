@@ -3,6 +3,11 @@ on:
   release:
     types: [published]
 
+permissions:
+  # See https://docs.npmjs.com/trusted-publishers
+  id-token: write
+  contents: read
+
 jobs:
   tag:
     name: Update 'latest' tag
